@@ -38,8 +38,7 @@ redisClient.hKeys("german", function (err, germankeys) {
             if (err) console.log(err);
             else console.log(" " + i + " German word for: " + 
             germankey + " is: " + value)
-        });
-});
-
-redisClient.quit();
+            });
+    });
+    redisClient.quit();
 });
