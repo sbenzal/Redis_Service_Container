@@ -1,0 +1,36 @@
+on: [workflow_dispatch]
+jobs:
+  # Name for the container job
+  container-job:
+    # Runner for the container job. Containers have to run on Linux
+    runs-on: ubuntu-latest
+    # We are using a node container image from doker hub to run the JavaScript
+    container: node:10.18-jessie
+    # Service containers to run with `container-job`
+    services:
+    # Name for the service container
+      redis:
+        # Docker Hub image for redis
+        image: redis
+        # Setting health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      # checkout the repo
+        - name: Check out repository code
+          uses: actions/checkout@v2
+      # Install dependencies
+        - name: Install dependencies
+          run: npm ci
+        - name: Connect to Redis
+      # Runs JavaScript to create a Redis client, populate data and read data
+          run: node redisclient.js
+      # Environment variable are passed to JavaScript to create Redis client
+          env:
+            # As the host name service container name(label) is passed
+            REDIS_HOST: redis
+            # The default Redis port is passed to create the redis client
+            REDIS_PORT: 6379
