@@ -25,8 +25,8 @@ jobs:
       # Install dependencies
         - name: Install dependencies
           run: npm ci
+      ## Runs JavaScript to create a Redis client, populate data and read data
         - name: Connect to Redis
-      # Runs JavaScript to create a Redis client, populate data and read data
           run: node redisclient.js
       # Environment variable are passed to JavaScript to create Redis client
           env:
